@@ -22,3 +22,13 @@ def test_transform(snowpark_session):
 
     for actual, expected in zip(df.collect(), expected_rows):
         assert actual == expected
+
+
+def test_union_by_name(snowpark_session):
+    df1 = snowpark_session.create_dataframe([[1]], schema=["a"])
+    df2 = snowpark_session.create_dataframe([[2]], schema=["b"])
+    unioned = df1._union_all_by_name(df2)
+
+    expected_df = snowpark_session.create_dataframe([[1, None], [None, 2]], schema=["a", "b"])
+    for actual, expected in zip(unioned.collect(), expected_df.collect()):
+        assert actual == expected
