@@ -1,0 +1,5 @@
+[tools]
+python = {version='3.11.8', virtualenv='.venv'}
+poetry = '1.7.0'
+just = '1.16.0'
+

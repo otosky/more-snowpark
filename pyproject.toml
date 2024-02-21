@@ -1,0 +1,62 @@
+[tool.poetry]
+name = "more-snowpark"
+version = "0.0.1"
+description = "Snowpark helpers and extensions"
+authors = ["Oliver Tosky <olivertosky@gmail.com>"]
+license = "GPL-2.0-or-later"
+readme = "README.md"
+packages = [{include = "more_snowpark"}]
+
+[tool.poetry.dependencies]
+python = ">=3.9,<3.12"
+snowflake-snowpark-python = "^1.12.1"
+pydantic-settings = "^2.2.1"
+
+
+[tool.poetry.group.dev.dependencies]
+black = "^24.2.0"
+isort = "^5.13.2"
+
+
+[tool.poetry.group.test.dependencies]
+pytest = "^8.0.1"
+pydantic = "^2.6.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.isort]
+force_grid_wrap = 0
+force_single_line = true
+include_trailing_comma = true
+line_length = 120
+multi_line_output = 3
+skip = ["venv", ".venv", "media", "staticfiles"]
+use_parentheses = true
+
+[tool.black]
+line-length = 120
+target-version = ['py37']
+include = '\.pyi?$'
+exclude = '''
+(
+  /(
+      \.eggs
+    | \.circleci
+    | \.git
+    | \.github
+    | \.hg
+    | \.mypy_cache
+    | \.pytest_cache
+    | \.tox
+    | \.venv
+    | _build
+    | build
+    | dist
+    | venv
+    | media
+    | staticfiles
+  )/
+)
+'''
