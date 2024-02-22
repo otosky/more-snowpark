@@ -1,0 +1,46 @@
+name: fmt
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  fmt:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v1
+
+      - name: set up python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+
+      - name: Install poetry
+        env:
+          POETRY_VERSION: "1.7.1"
+        run: |
+          curl -sSL https://install.python-poetry.org | python -
+          poetry config virtualenvs.create false
+
+      - name: Cache dependencies
+        id: cache-poetry-deps
+        uses: actions/cache@v2
+        with:
+          path: ${{ env.pythonLocation }}
+          key: ${{ runner.os }}-${{ env.pythonLocation }}-${{ hashFiles('poetry.lock') }}-fmt
+
+      - name: Install dependencies
+        if: steps.cache-poetry-deps.outputs.cache-hit != 'true'
+        run: poetry install
+
+      - name: isort
+        run: poetry run isort --check .
+
+      - name: black
+        run: poetry run black --check .
